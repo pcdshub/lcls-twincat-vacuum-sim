@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4020.12">
+  <POU Name="FB_MKS_275_to_500_HvOn" Id="{41d36b39-f1c2-4030-94b6-74c36212588b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MKS_275_to_500_HvOn
+VAR_INPUT
+	stPirani	:	ST_MKS_275;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR_IN_OUT
+	stCC		:	ST_MKS_500;
+END_VAR
+VAR
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* HV ON for MKS 275 Pirani Gauge to Turn on MKS 500 Cold Cathode Gauge
+A. Pai 
+2/8/2017
+
+
+Takes in Pirani Gauge as an INPUT and Cold Cathode gauge as an IN_OUT. 
+The Cold Cathode uses the Pirani Pressure to determine whether or not
+to turn on or turn off. There is no turn on/ turn off timer. 
+No Hysterisis either. 
+
+Turn on timer is left to Cold Cathode Function Block.
+*)
+//The Cold Cathode Setpoint is 0.01 Torr
+
+//A. Wallace, implementing hysteresis with S and R
+
+stCC.i_xHvOn S= stPirani.rPress < 5E-3;
+stCC.i_xHvOn R= stPirani.rPress >= 1.0E-2;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_MKS_275_to_500_HvOn">
+      <LineId Id="20" Count="11" />
+      <LineId Id="49" Count="3" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
